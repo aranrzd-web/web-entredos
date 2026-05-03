@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Entre Dos Studio | Foto & Vídeo Barcelona</title>
+    
+    <!-- Tipografies -->
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300&family=Montserrat:wght@300;400&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind per al layout -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body { background: #F2EDE4; color: #231200; font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; }
+        
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .title-serif { font-family: 'Cormorant Upright', serif; }
+        .josefin { font-family: 'Josefin Sans', sans-serif; }
+
+        /* Animacions de Fade In al fer scroll */
+        .reveal {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .reveal.active {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Hero Animation */
+        @keyframes heroFadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .hero-animate { animation: heroFadeIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+
+        /* Grid del Portfolio */
+        .portfolio-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-auto-rows: 250px;
+            gap: 4px;
+        }
+        @media (max-width: 768px) {
+            .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 350px; }
+        }
+
+        .portfolio-item {
+            position: relative;
+            overflow: hidden;
+            background-color: #ede5d8;
+            transition: all 0.5s ease;
+        }
+        .portfolio-item img {
+            width: 100%;
+            height: 100%;
+            object-cover: cover;
+            filter: grayscale(100%);
+            transition: all 0.8s ease;
+        }
+        .portfolio-item:hover img {
+            filter: grayscale(0%);
+            transform: scale(1.05);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-8 py-6 flex justify-between items-center">
+        <a href="#" class="title-serif text-xl tracking-[0.2em] uppercase">Entre Dos</a>
+        <div class="flex gap-8 text-[10px] uppercase tracking-[0.2em] opacity-60">
+            <a href="#portfolio" class="hover:opacity-100 transition-opacity">Portfolio</a>
+            <a href="#duo" class="hover:opacity-100 transition-opacity">Nosaltres</a>
+            <a href="#contacte" class="hover:opacity-100 transition-opacity">Contacte</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section id="hero" class="relative h-screen w-full flex flex-col items-center justify-center text-center px-4">
+        <div class="hero-animate">
+            <p class="text-[10px] uppercase tracking-[0.4em] mb-10 opacity-60">Foto · Vídeo · Barcelona</p>
+            <h1 class="title-serif text-5xl md:text-8xl font-medium tracking-[0.12em] uppercase mb-2">Entre Dos</h1>
+            <p class="josefin text-[10px] md:text-xs uppercase tracking-[0.6em] mb-12 opacity-50">Studio</p>
+            <p class="serif italic text-lg md:text-xl opacity-70 max-w-md mx-auto mb-10">Capturem el que existeix entre dos moments, dos cossos, dues llums</p>
+            <a href="#portfolio" class="inline-block border border-black/20 px-10 py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-[#231200] hover:text-white transition-all duration-500">Veure el treball</a>
+        </div>
+        
+        <!-- Línia de scroll -->
+        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-[1px] h-16 bg-gradient-to-b from-transparent to-black/20"></div>
+    </section>
+
+    <!-- INTRO QUOTE -->
+    <section class="py-32 px-8 max-w-4xl mx-auto text-center reveal">
+        <p class="serif text-2xl md:text-3xl italic opacity-70 leading-relaxed">
+            "No busquem la perfecció tècnica. Busquem l'instant just abans que tot canviï."
+        </p>
+        <div class="w-10 h-[1px] bg-black/20 mx-auto mt-12"></div>
+    </section>
+
+    <!-- PORTFOLIO -->
+    <section id="portfolio" class="px-4 py-20 max-w-7xl mx-auto">
+        <div class="flex items-baseline gap-6 mb-12 reveal">
+            <h2 class="serif text-5xl font-light">Portfolio</h2>
+            <span class="text-[10px] uppercase tracking-widest opacity-30">2023 — 2024</span>
+        </div>
+
+        <div class="portfolio-grid reveal">
+            <!-- Item 1 -->
+            <div class="portfolio-item md:col-span-1 md:row-span-2">
+                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80" alt="Vincle">
+            </div>
+            <!-- Item 2 -->
+            <div class="portfolio-item md:col-span-2 md:row-span-1">
+                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80" alt="Solstici">
+            </div>
+            <!-- Item 3 -->
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80" alt="Calma">
+            </div>
+            <!-- Item 4 -->
+            <div class="portfolio-item">
+                <img src="https://images.unsplash.com/photo-1519225497282-c420256af083?auto=format&fit=crop&q=80" alt="Trànsit">
+            </div>
+        </div>
+    </section>
+
+    <!-- THE DUO -->
+    <section id="duo" class="py-32 px-8 bg-black/5">
+        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
+            <div class="reveal">
+                <div class="aspect-[3/4] bg-[#ede5d8] overflow-hidden grayscale">
+                    <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-80" alt="Anna & Marc">
+                </div>
+            </div>
+            <div class="reveal">
+                <p class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40 text-black">Nosaltres</p>
+                <h2 class="serif text-5xl mb-8 leading-tight">Som l'Anna <br><span class="italic">i en Marc</span></h2>
+                <p class="serif text-xl opacity-60 leading-relaxed mb-6">Vam coincidir en un taller de fotografia analògica el 2019. Des d'aleshores treballem junts, mirem junts, creem junts.</p>
+                <p class="serif text-xl opacity-60 leading-relaxed mb-12">Entre Dos Studio és el resultat d'aquella primera mirada compartida: la convicció que dues perspectives valen més que una.</p>
+                
+                <div class="flex gap-12">
+                    <div>
+                        <p class="serif text-3xl">12+</p>
+                        <p class="text-[9px] uppercase tracking-widest opacity-40">Anys d'exp.</p>
+                    </div>
+                    <div>
+                        <p class="serif text-3xl">340+</p>
+                        <p class="text-[9px] uppercase tracking-widest opacity-40">Sessions</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CONTACTE -->
+    <section id="contacte" class="py-32 px-8 max-w-3xl mx-auto text-center reveal">
+        <p class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40">Contacte</p>
+        <h2 class="serif text-5xl md:text-6xl mb-12 font-light">Parlem <span class="italic">del vostre projecte</span></h2>
+        
+        <form action="#" class="space-y-12 text-left">
+            <div class="grid md:grid-cols-2 gap-8">
+                <input type="text" placeholder="NOM" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest">
+                <input type="email" placeholder="CORREU" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest">
+            </div>
+            <textarea placeholder="EL VOSTRE PROJECTE" rows="4" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest resize-none"></textarea>
+            <button type="submit" class="border border-black/20 px-12 py-5 text-[10px] uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all duration-500">Enviar missatge</button>
+        </form>
+
+        <div class="mt-24 pt-12 border-t border-black/5 flex flex-wrap justify-center gap-12 text-[10px] uppercase tracking-[0.2em] opacity-40">
+            <div>hola@entredostudio.com</div>
+            <div>@entredostudio</div>
+            <div>Barcelona</div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="py-12 text-center text-[9px] uppercase tracking-[0.3em] opacity-30">
+        © 2026 Entre Dos Studio — Dissenyat amb intenció
+    </footer>
+
+    <script>
+        // Funció per a l'animació de scroll
+        function reveal() {
+            var reveals = document.querySelectorAll(".reveal");
+            for (var i = 0; i < reveals.length; i++) {
+                var windowHeight = window.innerHeight;
+                var elementTop = reveals[i].getBoundingClientRect().topNormally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
