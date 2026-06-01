@@ -479,6 +479,13 @@
     <div class="duo-grid">
       <div class="fade-in">
         <div class="duo-photo" id="duoPhoto">
+            <img src="LOGO_ENTRE_DOS_final.png" alt="Entre Dos Studio" style="
+              width: 75%; max-width: 340px;
+              position: absolute; top: 50%; left: 50%;
+              transform: translate(-50%, -50%);
+              opacity: 0.85;
+              mix-blend-mode: multiply;
+            " />
           <div class="duo-photo-caption">Anna & Aran, Barcelona 2024</div>
         </div>
       </div>
@@ -576,7 +583,7 @@
         { id: 6,  url: "Carla&Ivan1.jpg",      col: "1 / 7",  row: "9 / 14" },  // gran horitzontal esquerra
         { id: 7,  url: "claudiavictor-3.jpg",  col: "7 / 13", row: "9 / 13" },  // mitjà vertical dreta
         { id: 8,  url: "Nuria&Litos-377.jpg",  col: "1 / 5",  row: "14 / 18"},  // petit vertical
-        { id: 9,  url: "286A4150.jpg",         col: "5 / 9",  row: "14 / 18"},  // petit vertical
+        { id: 9,  url: "286A4150.jpg",         col: "5 / 9",  row: "14 / 18", pos: "center top"},  // ram flors
         { id: 10, url: "Nuria&Litos-5.jpg",    col: "7 / 13", row: "13 / 18"},  // petit vertical dreta
 
         // --- BLOC 3 (files 18-26) ---
@@ -639,7 +646,7 @@
       el.style.gridColumn = item.col;
       el.style.gridRow = item.row;
       el.style.background = item.url
-        ? `url(${encodeURIComponent(item.url)}) center/cover no-repeat`
+        ? `url(${encodeURIComponent(item.url)}) ${item.pos || 'center'}/cover no-repeat`
         : GRADIENTS[(item.id - 1) % GRADIENTS.length];
       el.style.transitionDelay = `${(idx % 6) * 0.07}s`;
       el.innerHTML = `<div class="portfolio-overlay"></div><div class="portfolio-border"></div>`;
