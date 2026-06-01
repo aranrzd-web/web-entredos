@@ -1,202 +1,647 @@
 <!DOCTYPE html>
-<html lang="ca">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Entre Dos Studio Prova | Foto & Vídeo Barcelona</title>
-    
-    <!-- Tipografies -->
-    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300&family=Montserrat:wght@300;400&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
-    
-    <!-- Tailwind per al layout -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        html { scroll-behavior: smooth; }
-        body { background: #F2EDE4; color: #231200; font-family: 'Raleway', sans-serif; font-weight: 300; overflow-x: hidden; }
-        
-        .serif { font-family: 'Cormorant Garamond', serif; }
-        .title-serif { font-family: 'Cormorant Upright', serif; }
-        .josefin { font-family: 'Josefin Sans', sans-serif; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Entre Dos Studio</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300&family=Montserrat:wght@300;400&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body { background: #F2EDE4; color: #231200; font-family: 'Raleway', sans-serif; font-weight: 300; }
+    ::selection { background: rgba(35,18,0,0.15); }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: #F2EDE4; }
+    ::-webkit-scrollbar-thumb { background: #c9b89a; }
 
-        /* Animacions de Fade In al fer scroll */
-        .reveal {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: all 1.1s cubic-bezier(0.16, 1, 0.3, 1);
-        }
-        .reveal.active {
-            opacity: 1;
-            transform: translateY(0);
-        }
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      padding: 1.5rem 3rem;
+      display: flex; align-items: center; justify-content: space-between;
+      transition: all 0.6s cubic-bezier(0.16,1,0.3,1);
+    }
+    nav.scrolled {
+      background: rgba(242,237,228,0.94);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(35,18,0,0.07);
+    }
+    .nav-logo {
+      background: none; border: none; cursor: pointer;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem; color: #231200; letter-spacing: 0.2em;
+      text-transform: uppercase; font-weight: 300; text-decoration: none;
+    }
+    .nav-links { display: flex; gap: 2.5rem; }
+    .nav-links a {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.75rem; color: rgba(35,18,0,0.6);
+      letter-spacing: 0.2em; text-transform: uppercase;
+      text-decoration: none; transition: color 0.3s ease;
+    }
+    .nav-links a:hover { color: #231200; }
 
-        /* Hero Animation */
-        @keyframes heroFadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        .hero-animate { animation: heroFadeIn 1.8s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+    /* FADE IN */
+    .fade-in {
+      opacity: 0;
+      transform: translateY(32px);
+      transition: opacity 1.1s cubic-bezier(0.16,1,0.3,1), transform 1.1s cubic-bezier(0.16,1,0.3,1);
+    }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
 
-        /* Grid del Portfolio */
-        .portfolio-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            grid-auto-rows: 250px;
-            gap: 4px;
-        }
-        @media (max-width: 768px) {
-            .portfolio-grid { grid-template-columns: 1fr; grid-auto-rows: 350px; }
-        }
+    /* HERO */
+    #hero {
+      position: relative; height: 100vh; overflow: hidden;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background: linear-gradient(135deg, #F2EDE4 0%, #ede5d8 40%, #F2EDE4 100%);
+    }
+    .hero-radial {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(35,18,0,0.06) 0%, transparent 60%),
+        radial-gradient(ellipse at 80% 20%, rgba(35,18,0,0.04) 0%, transparent 50%);
+    }
+    .hero-noise {
+      position: absolute; inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.025'/%3E%3C/svg%3E");
+      background-repeat: repeat; background-size: 128px 128px; opacity: 0.4;
+    }
+    .hero-fade-bottom {
+      position: absolute; inset: 0;
+      background: linear-gradient(to bottom, transparent 60%, rgba(242,237,228,0.9) 100%);
+    }
+    .hero-content {
+      position: relative; z-index: 10; text-align: center; padding: 0 2rem;
+      animation: heroFadeIn 1.8s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    .hero-tagline {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.4em; text-transform: uppercase;
+      color: rgba(35,18,0,0.6); margin-bottom: 2.5rem;
+    }
+    .hero-title-wrap { margin-bottom: 3rem; }
+    .hero-title {
+      font-family: 'Cormorant Upright', Georgia, serif;
+      font-size: clamp(2rem, 6vw, 4.5rem);
+      font-weight: 500; line-height: 1.05; text-transform: uppercase;
+      color: #231200; letter-spacing: 0.12em; margin: 0;
+    }
+    .hero-studio {
+      font-family: 'Josefin Sans', sans-serif; font-weight: 200;
+      font-size: clamp(0.55rem, 1.4vw, 0.85rem);
+      letter-spacing: 0.55em; text-transform: uppercase;
+      color: rgba(35,18,0,0.65); margin-top: 0.5rem; margin-left: 0.1em;
+    }
+    .hero-subtitle {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1rem, 2vw, 1.25rem);
+      font-weight: 300; font-style: italic;
+      color: rgba(35,18,0,0.75); letter-spacing: 0.05em;
+      max-width: 420px; margin: 0 auto 3.5rem;
+    }
+    .hero-cta {
+      background: none;
+      border: 1px solid rgba(35,18,0,0.4);
+      color: rgba(35,18,0,0.85);
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+      padding: 14px 36px; cursor: pointer; transition: all 0.4s ease;
+      text-decoration: none; display: inline-block;
+    }
+    .hero-cta:hover { border-color: rgba(35,18,0,0.9); color: #231200; }
+    .hero-scroll {
+      position: absolute; bottom: 2.5rem; left: 50%; transform: translateX(-50%);
+      display: flex; flex-direction: column; align-items: center; gap: 8px;
+      animation: heroFadeIn 2.5s ease forwards;
+    }
+    .hero-scroll-line {
+      width: 1px; height: 60px;
+      background: linear-gradient(to bottom, transparent, rgba(35,18,0,0.3));
+      animation: scrollLine 2s ease-in-out infinite;
+    }
 
-        .portfolio-item {
-            position: relative;
-            overflow: hidden;
-            background-color: #ede5d8;
-            transition: all 0.5s ease;
-        }
-        .portfolio-item img {
-            width: 100%;
-            height: 100%;
-            object-cover: cover;
-            filter: grayscale(100%);
-            transition: all 0.8s ease;
-        }
-        .portfolio-item:hover img {
-            filter: grayscale(0%);
-            transform: scale(1.05);
-        }
-    </style>
+    /* INTRO QUOTE */
+    .intro-quote {
+      padding: 8rem 3rem; max-width: 900px; margin: 0 auto; text-align: center;
+    }
+    .intro-quote p {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(1.5rem, 3.5vw, 2.2rem);
+      font-weight: 300; font-style: italic;
+      color: rgba(35,18,0,0.7); line-height: 1.6; letter-spacing: 0.02em;
+    }
+    .intro-divider {
+      width: 40px; height: 1px; background: rgba(35,18,0,0.2); margin: 3rem auto 0;
+    }
+
+    /* PORTFOLIO */
+    #portfolio { padding: 6rem 3rem 10rem; }
+    .portfolio-header {
+      display: flex; align-items: baseline; gap: 2rem; margin-bottom: 5rem;
+      max-width: 1100px; margin-left: auto; margin-right: auto;
+    }
+    .portfolio-header h2 {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300; color: #231200; letter-spacing: -0.01em;
+    }
+    .portfolio-header span {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.3em;
+      text-transform: uppercase; color: rgba(35,18,0,0.3);
+    }
+    .portfolio-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-auto-rows: 220px;
+      gap: 3px;
+      max-width: 1100px; margin: 0 auto;
+    }
+    .portfolio-item {
+      position: relative; overflow: hidden; cursor: pointer;
+      opacity: 0; transform: scale(0.97);
+      transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
+      background-size: cover; background-position: center; background-repeat: no-repeat;
+    }
+    .portfolio-item.visible { opacity: 1; transform: scale(1); }
+    .portfolio-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(35,18,0,0.7) 0%, rgba(0,0,0,0) 50%);
+      opacity: 0; transition: opacity 0.5s ease; z-index: 2;
+    }
+    .portfolio-item:hover .portfolio-overlay { opacity: 1; }
+    .portfolio-caption {
+      position: absolute; bottom: 0; left: 0; right: 0;
+      padding: 1.5rem; z-index: 4;
+      transform: translateY(8px); opacity: 0;
+      transition: transform 0.4s cubic-bezier(0.16,1,0.3,1), opacity 0.4s ease;
+    }
+    .portfolio-item:hover .portfolio-caption { transform: translateY(0); opacity: 1; }
+    .portfolio-caption-label {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem; color: #231200; margin: 0; letter-spacing: 0.05em;
+    }
+    .portfolio-caption-type {
+      font-family: 'Helvetica Neue', sans-serif; font-size: 0.7rem;
+      color: rgba(35,18,0,0.6); margin: 4px 0 0;
+      letter-spacing: 0.15em; text-transform: uppercase;
+    }
+    .portfolio-border {
+      position: absolute; inset: 0;
+      border: 1px solid rgba(35,18,0,0.06); z-index: 5;
+      transition: border-color 0.3s ease;
+    }
+    .portfolio-item:hover .portfolio-border { border-color: rgba(35,18,0,0.12); }
+    .portfolio-more { text-align: center; margin-top: 4rem; }
+    .portfolio-more button {
+      background: none; border: none;
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(35,18,0,0.4); cursor: pointer;
+      border-bottom: 1px solid rgba(35,18,0,0.15); padding-bottom: 4px;
+      transition: color 0.3s ease, border-color 0.3s ease;
+    }
+    .portfolio-more button:hover { color: #231200; border-bottom-color: rgba(35,18,0,0.5); }
+
+    /* DUO */
+    #duo { padding: 10rem 3rem; background: rgba(35,18,0,0.015); }
+    .duo-grid {
+      max-width: 1100px; margin: 0 auto;
+      display: grid; grid-template-columns: 1fr 1fr; gap: 6rem; align-items: center;
+    }
+    .duo-photo {
+      aspect-ratio: 3/4;
+      background: linear-gradient(160deg, #ede5d8 0%, #e8ddd0 100%);
+      position: relative; overflow: hidden;
+      background-size: cover; background-position: center;
+    }
+    .duo-photo-caption {
+      position: absolute; bottom: 2rem; left: 2rem;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 0.85rem; font-style: italic;
+      color: rgba(35,18,0,0.3); letter-spacing: 0.05em;
+    }
+    .duo-label {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.4em;
+      text-transform: uppercase; color: rgba(35,18,0,0.35); margin-bottom: 2rem;
+    }
+    .duo-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.5rem, 5vw, 3.8rem);
+      font-weight: 300; line-height: 1.1;
+      color: #231200; letter-spacing: -0.01em; margin-bottom: 2.5rem;
+    }
+    .duo-title em { font-style: italic; }
+    .duo-bio {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.15rem; font-weight: 300;
+      color: rgba(35,18,0,0.65); line-height: 1.9; margin-bottom: 1.5rem;
+    }
+    .duo-stats { display: flex; gap: 3rem; margin-top: 3rem; }
+    .duo-stat-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 2rem; font-weight: 300; color: #231200; line-height: 1;
+    }
+    .duo-stat-label {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.15em;
+      text-transform: uppercase; color: rgba(35,18,0,0.35); margin-top: 6px;
+    }
+
+    /* SERVICES */
+    .services-section { padding: 10rem 3rem; }
+    .services-inner { max-width: 1100px; margin: 0 auto; }
+    .services-label {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.4em;
+      text-transform: uppercase; color: rgba(35,18,0,0.35); margin-bottom: 5rem;
+    }
+    .services-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr);
+      gap: 1px; background: rgba(35,18,0,0.07);
+    }
+    .service-card {
+      padding: 3rem 2.5rem; background: #F2EDE4;
+      transition: background 0.4s ease;
+    }
+    .service-card:hover { background: rgba(35,18,0,0.05); }
+    .service-num {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.3em;
+      color: rgba(35,18,0,0.25); margin-bottom: 1.5rem;
+    }
+    .service-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem; font-weight: 300; color: #231200; margin-bottom: 1rem;
+    }
+    .service-desc {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.85rem; line-height: 1.8;
+      color: rgba(35,18,0,0.5); letter-spacing: 0.02em;
+    }
+
+    /* CONTACT */
+    #contacte { padding: 10rem 3rem 12rem; background: rgba(35,18,0,0.04); }
+    .contact-inner { max-width: 680px; margin: 0 auto; }
+    .contact-label {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.4em;
+      text-transform: uppercase; color: rgba(35,18,0,0.35); margin-bottom: 2rem;
+    }
+    .contact-title {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      font-weight: 300; line-height: 1.05;
+      color: #231200; letter-spacing: -0.01em; margin-bottom: 1.5rem;
+    }
+    .contact-title em { font-style: italic; }
+    .contact-desc {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.1rem; color: rgba(35,18,0,0.5);
+      line-height: 1.8; margin-bottom: 4rem;
+    }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+    input, textarea {
+      background: transparent; border: none;
+      border-bottom: 1px solid rgba(35,18,0,0.2);
+      color: #231200; font-family: 'Raleway', sans-serif;
+      font-weight: 300; font-size: 0.95rem;
+      padding: 12px 0; width: 100%; outline: none;
+      letter-spacing: 0.05em; transition: border-color 0.3s ease;
+    }
+    input::placeholder, textarea::placeholder {
+      color: rgba(35,18,0,0.3); letter-spacing: 0.1em;
+      font-size: 0.85rem; text-transform: uppercase;
+    }
+    input:focus, textarea:focus { border-bottom-color: rgba(35,18,0,0.6); }
+    textarea { resize: none; min-height: 100px; }
+    .form-group { margin-top: 2rem; }
+    .submit-btn {
+      background: none; border: 1px solid rgba(35,18,0,0.25);
+      color: rgba(35,18,0,0.7);
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.7rem; letter-spacing: 0.3em; text-transform: uppercase;
+      padding: 16px 48px; cursor: pointer; transition: all 0.4s ease;
+      margin-top: 2rem;
+    }
+    .submit-btn:hover { border-color: rgba(35,18,0,0.7); color: #231200; }
+    .form-success {
+      display: none; padding: 3rem 0;
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1.5rem; font-style: italic;
+      color: rgba(35,18,0,0.7); line-height: 1.6;
+    }
+    .contact-info {
+      margin-top: 5rem; padding-top: 3rem;
+      border-top: 1px solid rgba(35,18,0,0.08);
+      display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1.5rem;
+    }
+    .contact-info-label {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.6rem; letter-spacing: 0.3em; text-transform: uppercase;
+      color: rgba(35,18,0,0.3); margin-bottom: 8px;
+    }
+    .contact-info-value {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 1rem; color: rgba(35,18,0,0.6);
+    }
+
+    /* FOOTER */
+    footer {
+      padding: 3rem; border-top: 1px solid rgba(35,18,0,0.07);
+    }
+    .footer-inner {
+      max-width: 1100px; margin: 0 auto;
+      display: flex; justify-content: space-between;
+      align-items: center; flex-wrap: wrap; gap: 1rem;
+    }
+    .footer-copy {
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      font-size: 0.9rem; font-style: italic; color: rgba(35,18,0,0.25);
+    }
+    .footer-tag {
+      font-family: 'Raleway', sans-serif; font-weight: 300;
+      font-size: 0.65rem; letter-spacing: 0.2em; text-transform: uppercase;
+      color: rgba(35,18,0,0.2);
+    }
+
+    @keyframes heroFadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.3; transform: scaleY(0.6); }
+      50% { opacity: 1; transform: scaleY(1); }
+    }
+  </style>
 </head>
 <body>
 
-    <!-- NAV -->
-    <nav id="navbar" class="fixed top-0 left-0 right-0 z-50 transition-all duration-500 px-8 py-6 flex justify-between items-center">
-        <a href="#" class="title-serif text-xl tracking-[0.2em] uppercase">Entre Dos</a>
-        <div class="flex gap-8 text-[10px] uppercase tracking-[0.2em] opacity-60">
-            <a href="#portfolio" class="hover:opacity-100 transition-opacity">Portfolio</a>
-            <a href="#duo" class="hover:opacity-100 transition-opacity">Nosaltres</a>
-            <a href="#contacte" class="hover:opacity-100 transition-opacity">Contacte</a>
-        </div>
-    </nav>
-
-<!-- HERO -->
-<section id="hero" class="relative h-screen w-full flex flex-col items-center justify-center text-center px-4 overflow-hidden" style="background-color: #F2EDE4;">
-    
-    <!-- FOTO DE FONS -->
-    <div class="absolute inset-0 z-0">
-        <img src="hero-foto-web.jpg" 
-             class="w-full h-full object-cover opacity-40" 
-             alt="Entre Dos Studio"
-             onerror="this.src='https://images.unsplash.com/photo-1511285560929-80b456fea0bc?q=80&w=2000'">
+  <!-- NAV -->
+  <nav id="nav">
+    <a href="#hero" class="nav-logo">Entre Dos</a>
+    <div class="nav-links">
+      <a href="#portfolio">Portfolio</a>
+      <a href="#duo">About us</a>
+      <a href="#contacte">Contact</a>
     </div>
+  </nav>
 
-    <div class="hero-animate relative z-10">
-        <p class="text-[10px] uppercase tracking-[0.4em] mb-10 opacity-60">Foto · Vídeo · Barcelona</p>
-        <h1 class="title-serif text-5xl md:text-8xl font-medium tracking-[0.12em] uppercase mb-2">Entre Dos</h1>
-        <p class="josefin text-[10px] md:text-xs uppercase tracking-[0.6em] mb-12 opacity-50">Studio</p>
-        <p class="serif italic text-lg md:text-xl opacity-70 max-w-md mx-auto mb-10">Capturem el que existeix entre dos moments, dos cossos, dues llums</p>
-        <a href="#portfolio" class="inline-block border border-black/20 px-10 py-4 text-[10px] uppercase tracking-[0.3em] hover:bg-[#231200] hover:text-white transition-all duration-500">Veure el treball</a>
+  <!-- HERO -->
+  <section id="hero">
+    <div class="hero-bg">
+      <div class="hero-radial"></div>
+      <div class="hero-noise"></div>
     </div>
-</section>
-        
-        <!-- Línia de scroll -->
-        <div class="absolute bottom-10 left-1/2 -translate-x-1/2 w-[1px] h-16 bg-gradient-to-b from-transparent to-black/20"></div>
-    </section>
+    <div class="hero-fade-bottom"></div>
+    <div class="hero-content">
+      <p class="hero-tagline">Photo &nbsp;·&nbsp; Film &nbsp;·&nbsp; Barcelona</p>
+      <div class="hero-title-wrap">
+        <h1 class="hero-title">Entre Dos</h1>
+        <p class="hero-studio">Studio</p>
+      </div>
+      <p class="hero-subtitle">Our story, capturing yours</p>
+      <a href="#portfolio" class="hero-cta">Our Stories</a>
+    </div>
+    <div class="hero-scroll">
+      <div class="hero-scroll-line"></div>
+    </div>
+  </section>
 
-    <!-- INTRO QUOTE -->
-    <section class="py-32 px-8 max-w-4xl mx-auto text-center reveal">
-        <p class="serif text-2xl md:text-3xl italic opacity-70 leading-relaxed">
-            "No busquem la perfecció tècnica. Busquem l'instant just abans que tot canviï."
-        </p>
-        <div class="w-10 h-[1px] bg-black/20 mx-auto mt-12"></div>
-    </section>
+  <!-- INTRO QUOTE -->
+  <section class="intro-quote">
+    <div class="fade-in">
+      <p>"We don't chase technical perfection. We chase the instant just before everything changes."</p>
+      <div class="intro-divider"></div>
+    </div>
+  </section>
 
-    <!-- PORTFOLIO -->
-    <section id="portfolio" class="px-4 py-20 max-w-7xl mx-auto">
-        <div class="flex items-baseline gap-6 mb-12 reveal">
-            <h2 class="serif text-5xl font-light">Portfolio</h2>
-            <span class="text-[10px] uppercase tracking-widest opacity-30">2023 — 2024</span>
+  <!-- PORTFOLIO -->
+  <section id="portfolio">
+    <div class="portfolio-header fade-in">
+      <h2>Portfolio</h2>
+      <span>2023 – 2025</span>
+    </div>
+    <div class="portfolio-grid" id="portfolioGrid"></div>
+    <div class="portfolio-more fade-in">
+      <button>View full portfolio</button>
+    </div>
+  </section>
+
+  <!-- DUO -->
+  <section id="duo">
+    <div class="duo-grid">
+      <div class="fade-in">
+        <div class="duo-photo" id="duoPhoto">
+          <div class="duo-photo-caption">Anna & Marc, Barcelona 2024</div>
         </div>
-
-        <div class="portfolio-grid reveal">
-            <!-- Item 1 -->
-            <div class="portfolio-item md:col-span-1 md:row-span-2">
-                <img src="https://images.unsplash.com/photo-1511285560929-80b456fea0bc?auto=format&fit=crop&q=80" alt="Vincle">
-            </div>
-            <!-- Item 2 -->
-            <div class="portfolio-item md:col-span-2 md:row-span-1">
-                <img src="https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&q=80" alt="Solstici">
-            </div>
-            <!-- Item 3 -->
-            <div class="portfolio-item">
-                <img src="https://images.unsplash.com/photo-1583939003579-730e3918a45a?auto=format&fit=crop&q=80" alt="Calma">
-            </div>
-            <!-- Item 4 -->
-            <div class="portfolio-item">
-                <img src="https://images.unsplash.com/photo-1519225497282-c420256af083?auto=format&fit=crop&q=80" alt="Trànsit">
-            </div>
+      </div>
+      <div>
+        <div class="fade-in" style="transition-delay:0.1s">
+          <p class="duo-label">The Duo</p>
         </div>
-    </section>
-
-    <!-- THE DUO -->
-    <section id="duo" class="py-32 px-8 bg-black/5">
-        <div class="max-w-6xl mx-auto grid md:grid-cols-2 gap-20 items-center">
-            <div class="reveal">
-                <div class="aspect-[3/4] bg-[#ede5d8] overflow-hidden grayscale">
-                    <img src="https://images.unsplash.com/photo-1522673607200-1648832cee98?auto=format&fit=crop&q=80" class="w-full h-full object-cover opacity-80" alt="Anna & Marc">
-                </div>
-            </div>
-            <div class="reveal">
-                <p class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40 text-black">Nosaltres</p>
-                <h2 class="serif text-5xl mb-8 leading-tight">Som l'Anna <br><span class="italic">i en Marc</span></h2>
-                <p class="serif text-xl opacity-60 leading-relaxed mb-6">Vam coincidir en un taller de fotografia analògica el 2019. Des d'aleshores treballem junts, mirem junts, creem junts.</p>
-                <p class="serif text-xl opacity-60 leading-relaxed mb-12">Entre Dos Studio és el resultat d'aquella primera mirada compartida: la convicció que dues perspectives valen més que una.</p>
-                
-                <div class="flex gap-12">
-                    <div>
-                        <p class="serif text-3xl">12+</p>
-                        <p class="text-[9px] uppercase tracking-widest opacity-40">Anys d'exp.</p>
-                    </div>
-                    <div>
-                        <p class="serif text-3xl">340+</p>
-                        <p class="text-[9px] uppercase tracking-widest opacity-40">Sessions</p>
-                    </div>
-                </div>
-            </div>
+        <div class="fade-in" style="transition-delay:0.2s">
+          <h2 class="duo-title">We are Anna<br><em>& Marc</em></h2>
         </div>
-    </section>
+        <div class="fade-in" style="transition-delay:0.3s">
+          <p class="duo-bio">We met at an analog photography workshop in 2019. Since then we work together, we look together, we create together.</p>
+          <p class="duo-bio">Entre Dos Studio is the result of that first shared gaze: the conviction that two perspectives are worth more than one, and that the best photography happens in the silence between two clicks.</p>
+        </div>
+        <div class="fade-in" style="transition-delay:0.4s">
+          <div class="duo-stats" id="duoStats"></div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    <!-- CONTACTE -->
-    <section id="contacte" class="py-32 px-8 max-w-3xl mx-auto text-center reveal">
-        <p class="text-[10px] uppercase tracking-[0.4em] mb-8 opacity-40">Contacte</p>
-        <h2 class="serif text-5xl md:text-6xl mb-12 font-light">Parlem <span class="italic">del vostre projecte</span></h2>
-        
-        <form action="#" class="space-y-12 text-left">
-            <div class="grid md:grid-cols-2 gap-8">
-                <input type="text" placeholder="NOM" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest">
-                <input type="email" placeholder="CORREU" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest">
-            </div>
-            <textarea placeholder="EL VOSTRE PROJECTE" rows="4" class="w-full bg-transparent border-b border-black/10 py-4 outline-none focus:border-black/40 transition-colors text-xs tracking-widest resize-none"></textarea>
-            <button type="submit" class="border border-black/20 px-12 py-5 text-[10px] uppercase tracking-[0.3em] hover:bg-black hover:text-white transition-all duration-500">Enviar missatge</button>
+  <!-- SERVICES -->
+  <section class="services-section">
+    <div class="services-inner">
+      <p class="services-label fade-in">Services</p>
+      <div class="services-grid" id="servicesGrid"></div>
+    </div>
+  </section>
+
+  <!-- CONTACT -->
+  <section id="contacte">
+    <div class="contact-inner">
+      <div class="fade-in"><p class="contact-label">Contact</p></div>
+      <div class="fade-in" style="transition-delay:0.1s">
+        <h2 class="contact-title">Let's talk<br><em>about your story</em></h2>
+      </div>
+      <div class="fade-in" style="transition-delay:0.2s">
+        <p class="contact-desc">Every session begins with a conversation. Tell us your idea and we'll find a way to make it real.</p>
+      </div>
+      <div class="fade-in" style="transition-delay:0.3s">
+        <form id="contactForm">
+          <div class="form-row">
+            <input type="text" placeholder="Name" required />
+            <input type="email" placeholder="Email" required />
+          </div>
+          <div class="form-group">
+            <textarea placeholder="Your project" required></textarea>
+          </div>
+          <button type="submit" class="submit-btn">Send message</button>
         </form>
+        <div class="form-success" id="formSuccess">Thank you. We'll be in touch soon.</div>
+      </div>
+      <div class="fade-in" style="transition-delay:0.4s">
+        <div class="contact-info" id="contactInfo"></div>
+      </div>
+    </div>
+  </section>
 
-        <div class="mt-24 pt-12 border-t border-black/5 flex flex-wrap justify-center gap-12 text-[10px] uppercase tracking-[0.2em] opacity-40">
-            <div>hola@entredostudio.com</div>
-            <div>@entredostudio</div>
-            <div>Barcelona</div>
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <p class="footer-copy">© 2025 Entre Dos Studio</p>
+      <p class="footer-tag">Barcelona · Designed with intention</p>
+    </div>
+  </footer>
+
+  <script>
+    // ============================================================
+    //  SITE_CONTENT — edit all website content here
+    //  without touching anything else in the code
+    // ============================================================
+    const SITE_CONTENT = {
+
+      // --- PORTFOLIO ---
+      // type:  "photo" | "video"
+      // url:   image filename (put images in same folder as index.html)
+      // col/row: CSS grid position (no need to change)
+      portfolio: [
+        { id: 1, type: "photo", label: "Nuria & Litos",    year: "2024", url: "Nuria_Litos-350.jpg",         col: "1 / 2", row: "1 / 3" },
+        { id: 2, type: "photo", label: "Nuria & Litos",    year: "2024", url: "Nuria_Litos-545.jpg",         col: "2 / 4", row: "1 / 2" },
+        { id: 3, type: "photo", label: "Nuria & Litos",    year: "2024", url: "Nuria_Litos-1.jpg",           col: "2 / 3", row: "2 / 3" },
+        { id: 4, type: "photo", label: "Nuria & Litos",    year: "2024", url: "Nuria_Litos-5.jpg",           col: "3 / 4", row: "2 / 3" },
+        { id: 5, type: "photo", label: "Claudia & Victor", year: "2024", url: "Cla_udia_Vi_ctor484_1.jpg",   col: "1 / 3", row: "3 / 4" },
+        { id: 6, type: "photo", label: "Nuria & Litos",    year: "2024", url: "Nuria_Litos-477.jpg",         col: "3 / 4", row: "3 / 5" },
+        { id: 7, type: "photo", label: "Claudia & Victor", year: "2024", url: "claudiavictor-3.jpg",         col: "1 / 2", row: "4 / 5" },
+        { id: 8, type: "photo", label: "Entre Dos",        year: "2024", url: "DSC00204.jpg",                col: "2 / 3", row: "4 / 5" },
+      ],
+
+      // --- THE DUO ---
+      duo: {
+        photoUrl: "",  // optional: filename of your photo
+      },
+
+      // --- STATS ---
+      stats: [
+        { value: "12+",  label: "Years of experience" },
+        { value: "340+", label: "Sessions completed" },
+        { value: "3",    label: "International awards" },
+      ],
+
+      // --- SERVICES ---
+      services: [
+        { num: "01", title: "Couples",   desc: "Intimate sessions for two people in love. Places that mean something to you." },
+        { num: "02", title: "Weddings",  desc: "Cinematic documentation of your most important day. Photography and film in a single package." },
+        { num: "03", title: "Families",  desc: "Everyday life elevated. Sessions at your home or your favourite places." },
+        { num: "04", title: "Editorial", desc: "Campaigns for brands that believe in authenticity and a slower rhythm." },
+        { num: "05", title: "Portraits", desc: "Individual sessions for artists, musicians, writers. Your own visual identity." },
+        { num: "06", title: "Corporate", desc: "Audiovisual content for companies with soul. Brand and team videos." },
+      ],
+
+      // --- CONTACT ---
+      contact: {
+        email:     "hello@entredos.studio",
+        instagram: "@entredos.studio",
+        phone:     "+34 933 000 000",
+      },
+    };
+    // ============================================================
+
+    const GRADIENTS = [
+      "linear-gradient(135deg, #ede5d8 0%, #e5d9c8 100%)",
+      "linear-gradient(160deg, #ede5d8 0%, #e8ddd0 100%)",
+      "linear-gradient(135deg, #e8ddd0 0%, #ddd0be 100%)",
+      "linear-gradient(135deg, #f0ebe2 0%, #ede5d8 100%)",
+      "linear-gradient(160deg, #ede5d8 0%, #e8ddd0 100%)",
+      "linear-gradient(135deg, #ede5d8 0%, #e3d5c2 100%)",
+      "linear-gradient(160deg, #e8ddd0 0%, #ddd0be 100%)",
+      "linear-gradient(135deg, #e8ddd0 0%, #ede5d8 100%)",
+    ];
+
+    // Build portfolio grid
+    const grid = document.getElementById('portfolioGrid');
+    SITE_CONTENT.portfolio.forEach(item => {
+      const el = document.createElement('div');
+      el.className = 'portfolio-item fade-in';
+      el.style.gridColumn = item.col;
+      el.style.gridRow = item.row;
+      el.style.background = item.url
+        ? `url(${item.url}) center/cover no-repeat`
+        : GRADIENTS[(item.id - 1) % GRADIENTS.length];
+      el.style.transitionDelay = `${item.id * 0.07}s`;
+      el.innerHTML = `
+        <div class="portfolio-overlay"></div>
+        <div class="portfolio-caption">
+          <p class="portfolio-caption-label">${item.label}</p>
+          <p class="portfolio-caption-type">${item.type === 'video' ? 'Film' : 'Photo'} · ${item.year}</p>
         </div>
-    </section>
+        <div class="portfolio-border"></div>
+      `;
+      grid.appendChild(el);
+    });
 
-    <!-- FOOTER -->
-    <footer class="py-12 text-center text-[9px] uppercase tracking-[0.3em] opacity-30">
-        © 2026 Entre Dos Studio — Dissenyat amb intenció
-    </footer>
+    // Build duo photo
+    if (SITE_CONTENT.duo.photoUrl) {
+      document.getElementById('duoPhoto').style.backgroundImage = `url(${SITE_CONTENT.duo.photoUrl})`;
+    }
 
-    <script>
-        // Funció per a l'animació de scroll
-        function reveal() {
-            var reveals = document.querySelectorAll(".reveal");
-            for (var i = 0; i < reveals.length; i++) {
-                var windowHeight = window.innerHeight;
-                var elementTop = reveals[i].getBoundingClientRect().topNormally I can help with things like this, but I don't seem to have access to that content. You can try again or ask me for something else.
+    // Build stats
+    const statsEl = document.getElementById('duoStats');
+    SITE_CONTENT.stats.forEach(s => {
+      const div = document.createElement('div');
+      div.innerHTML = `<p class="duo-stat-value">${s.value}</p><p class="duo-stat-label">${s.label}</p>`;
+      statsEl.appendChild(div);
+    });
+
+    // Build services
+    const servicesEl = document.getElementById('servicesGrid');
+    SITE_CONTENT.services.forEach(s => {
+      const div = document.createElement('div');
+      div.className = 'service-card fade-in';
+      div.innerHTML = `
+        <p class="service-num">${s.num}</p>
+        <h3 class="service-title">${s.title}</h3>
+        <p class="service-desc">${s.desc}</p>
+      `;
+      servicesEl.appendChild(div);
+    });
+
+    // Build contact info
+    const contactEl = document.getElementById('contactInfo');
+    [['Email', SITE_CONTENT.contact.email], ['Instagram', SITE_CONTENT.contact.instagram], ['Phone', SITE_CONTENT.contact.phone]].forEach(([label, value]) => {
+      const div = document.createElement('div');
+      div.innerHTML = `<p class="contact-info-label">${label}</p><p class="contact-info-value">${value}</p>`;
+      contactEl.appendChild(div);
+    });
+
+    // Nav scroll effect
+    window.addEventListener('scroll', () => {
+      document.getElementById('nav').classList.toggle('scrolled', window.scrollY > 80);
+    }, { passive: true });
+
+    // Fade-in on scroll
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+    // Contact form
+    document.getElementById('contactForm').addEventListener('submit', e => {
+      e.preventDefault();
+      document.getElementById('contactForm').style.display = 'none';
+      document.getElementById('formSuccess').style.display = 'block';
+    });
+  </script>
+</body>
+</html>
