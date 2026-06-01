@@ -162,7 +162,7 @@
     .portfolio-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: auto;
+      grid-auto-rows: 260px;
       gap: 3px;
       max-width: 1100px; margin: 0 auto;
     }
@@ -172,21 +172,12 @@
       transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
       background-size: cover; background-position: center; background-repeat: no-repeat;
     }
-    /* Horitzontal 4:3 — ocupa 2 columnes */
-    .portfolio-item.horiz {
-      grid-column: span 2;
-      aspect-ratio: 4 / 3;
-    }
-    /* Vertical 3:4 — ocupa 1 columna */
-    .portfolio-item.vert {
-      grid-column: span 1;
-      aspect-ratio: 3 / 4;
-    }
-    /* Quadrat — ocupa 1 columna */
-    .portfolio-item.sq {
-      grid-column: span 1;
-      aspect-ratio: 4 / 3;
-    }
+    /* Horitzontal: 2 columnes, 1 fila */
+    .portfolio-item.horiz { grid-column: span 2; grid-row: span 1; }
+    /* Vertical: 1 columna, 2 files */
+    .portfolio-item.vert  { grid-column: span 1; grid-row: span 2; }
+    /* Normal: 1 columna, 1 fila */
+    .portfolio-item.sq    { grid-column: span 1; grid-row: span 1; }
     .portfolio-item.visible { opacity: 1; transform: scale(1); }
     .portfolio-overlay {
       position: absolute; inset: 0;
@@ -580,32 +571,28 @@
       // url:   image filename (put images in same folder as index.html)
       // col/row: CSS grid position (no need to change)
       portfolio: [
-        // Fila 1: vert + horiz (3 col total)
-        { id: 1,  url: "286A5057.jpg",        orient: "vert" },
-        { id: 2,  url: "286A6032.jpg",         orient: "horiz" },
-        // Fila 2: horiz + vert (3 col total)
-        { id: 3,  url: "Nuria&Litos-811.jpg",  orient: "horiz" },
-        { id: 4,  url: "286A4110.jpg",         orient: "vert" },
-        // Fila 3: vert + vert + vert (3 col total)
-        { id: 5,  url: "Carla&Ivan1.jpg",      orient: "vert" },
-        { id: 6,  url: "Nuria&Litos-410.jpg",  orient: "vert" },
+        // Bloc 1: vert(1col,2f) + sq(1col,1f) + sq(1col,1f) + sq(1col,1f) → fila 1-2 col 1 / fila1 col2+3 / fila2 col2+3
+        { id: 1,  url: "286A5057.jpg",         orient: "vert" },
+        { id: 2,  url: "286A6032.jpg",         orient: "sq" },
+        { id: 3,  url: "Nuria&Litos-811.jpg",  orient: "sq" },
+        { id: 4,  url: "286A4110.jpg",         orient: "sq" },
+        { id: 5,  url: "Nuria&Litos-410.jpg",  orient: "sq" },
+        // Bloc 2: horiz(2col,1f) + vert(1col,2f) + sq + sq
+        { id: 6,  url: "Carla&Ivan1.jpg",      orient: "horiz" },
         { id: 7,  url: "claudiavictor-3.jpg",  orient: "vert" },
-        // Fila 4: horiz + vert (3 col total)
-        { id: 8,  url: "Nuria&Litos-377.jpg",  orient: "horiz" },
-        { id: 9,  url: "286A4150.jpg",         orient: "vert" },
-        // Fila 5: vert + horiz (3 col total)
-        { id: 10, url: "Nuria&Litos-5.jpg",    orient: "vert" },
-        { id: 11, url: "Nuria&Litos-477.jpg",  orient: "horiz" },
-        // Fila 6: vert + vert + vert
-        { id: 12, url: "Nuria&Litos-12.jpg",   orient: "vert" },
-        { id: 13, url: "DSC00204.jpg",         orient: "vert" },
-        { id: 14, url: "Nuria&Litos-40.jpg",   orient: "vert" },
-        // Fila 7: horiz + vert
-        { id: 15, url: "Nuria&Litos-11.jpg",   orient: "horiz" },
-        { id: 16, url: "Nuria&Litos-476.jpg",  orient: "vert" },
-        // Fila 8: vert + horiz
-        { id: 17, url: "Nuria&Litos-405.jpg",  orient: "vert" },
-        { id: 18, url: "Nuria&Litos-476.jpg",  orient: "horiz" },
+        { id: 8,  url: "Nuria&Litos-377.jpg",  orient: "sq" },
+        { id: 9,  url: "286A4150.jpg",         orient: "sq" },
+        { id: 10, url: "Nuria&Litos-5.jpg",    orient: "sq" },
+        // Bloc 3: vert + sq + sq + sq + sq
+        { id: 11, url: "Nuria&Litos-477.jpg",  orient: "vert" },
+        { id: 12, url: "Nuria&Litos-12.jpg",   orient: "sq" },
+        { id: 13, url: "DSC00204.jpg",         orient: "sq" },
+        { id: 14, url: "Nuria&Litos-40.jpg",   orient: "sq" },
+        { id: 15, url: "Nuria&Litos-11.jpg",   orient: "sq" },
+        // Bloc 4: horiz + sq + sq + sq
+        { id: 16, url: "Nuria&Litos-476.jpg",  orient: "horiz" },
+        { id: 17, url: "Nuria&Litos-405.jpg",  orient: "sq" },
+        { id: 18, url: "Nuria&Litos-12.jpg",   orient: "sq" },
       ],
 
       // --- THE DUO ---
