@@ -161,8 +161,8 @@
     }
     .portfolio-grid {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 260px;
+      grid-template-columns: repeat(12, 1fr);
+      grid-auto-rows: 60px;
       gap: 3px;
       max-width: 1100px; margin: 0 auto;
     }
@@ -172,12 +172,6 @@
       transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
       background-size: cover; background-position: center; background-repeat: no-repeat;
     }
-    /* Horitzontal: 2 columnes, 1 fila */
-    .portfolio-item.horiz { grid-column: span 2; grid-row: span 1; }
-    /* Vertical: 1 columna, 2 files */
-    .portfolio-item.vert  { grid-column: span 1; grid-row: span 2; }
-    /* Normal: 1 columna, 1 fila */
-    .portfolio-item.sq    { grid-column: span 1; grid-row: span 1; }
     .portfolio-item.visible { opacity: 1; transform: scale(1); }
     .portfolio-overlay {
       position: absolute; inset: 0;
@@ -571,28 +565,30 @@
       // url:   image filename (put images in same folder as index.html)
       // col/row: CSS grid position (no need to change)
       portfolio: [
-        // Bloc 1: vert(1col,2f) + sq(1col,1f) + sq(1col,1f) + sq(1col,1f) → fila 1-2 col 1 / fila1 col2+3 / fila2 col2+3
-        { id: 1,  url: "286A5057.jpg",         orient: "vert" },
-        { id: 2,  url: "286A6032.jpg",         orient: "sq" },
-        { id: 3,  url: "Nuria&Litos-811.jpg",  orient: "sq" },
-        { id: 4,  url: "286A4110.jpg",         orient: "sq" },
-        { id: 5,  url: "Nuria&Litos-410.jpg",  orient: "sq" },
-        // Bloc 2: horiz(2col,1f) + vert(1col,2f) + sq + sq
-        { id: 6,  url: "Carla&Ivan1.jpg",      orient: "horiz" },
-        { id: 7,  url: "claudiavictor-3.jpg",  orient: "vert" },
-        { id: 8,  url: "Nuria&Litos-377.jpg",  orient: "sq" },
-        { id: 9,  url: "286A4150.jpg",         orient: "sq" },
-        { id: 10, url: "Nuria&Litos-5.jpg",    orient: "sq" },
-        // Bloc 3: vert + sq + sq + sq + sq
-        { id: 11, url: "Nuria&Litos-477.jpg",  orient: "vert" },
-        { id: 12, url: "Nuria&Litos-12.jpg",   orient: "sq" },
-        { id: 13, url: "DSC00204.jpg",         orient: "sq" },
-        { id: 14, url: "Nuria&Litos-40.jpg",   orient: "sq" },
-        { id: 15, url: "Nuria&Litos-11.jpg",   orient: "sq" },
-        // Bloc 4: horiz + sq + sq + sq
-        { id: 16, url: "Nuria&Litos-476.jpg",  orient: "horiz" },
-        { id: 17, url: "Nuria&Litos-405.jpg",  orient: "sq" },
-        { id: 18, url: "Nuria&Litos-12.jpg",   orient: "sq" },
+        // --- BLOC 1 (files 1-8) ---
+        { id: 1,  url: "286A5057.jpg",        col: "1 / 5",  row: "1 / 6"  },  // petit vertical esquerra
+        { id: 2,  url: "286A6032.jpg",         col: "5 / 9",  row: "1 / 9"  },  // gran vertical centre
+        { id: 3,  url: "Nuria&Litos-811.jpg",  col: "9 / 13", row: "1 / 5"  },  // mitjà vertical dreta
+        { id: 4,  url: "286A4110.jpg",         col: "1 / 5",  row: "6 / 9"  },  // petit vertical esquerra
+        { id: 5,  url: "Nuria&Litos-410.jpg",  col: "9 / 13", row: "5 / 9"  },  // petit vertical dreta
+
+        // --- BLOC 2 (files 9-17) ---
+        { id: 6,  url: "Carla&Ivan1.jpg",      col: "1 / 7",  row: "9 / 14" },  // gran horitzontal esquerra
+        { id: 7,  url: "claudiavictor-3.jpg",  col: "7 / 13", row: "9 / 13" },  // mitjà vertical dreta
+        { id: 8,  url: "Nuria&Litos-377.jpg",  col: "1 / 5",  row: "14 / 18"},  // petit vertical
+        { id: 9,  url: "286A4150.jpg",         col: "5 / 9",  row: "14 / 18"},  // petit vertical
+        { id: 10, url: "Nuria&Litos-5.jpg",    col: "7 / 13", row: "13 / 18"},  // petit vertical dreta
+
+        // --- BLOC 3 (files 18-26) ---
+        { id: 11, url: "Nuria&Litos-477.jpg",  col: "1 / 5",  row: "18 / 24"},  // gran vertical
+        { id: 12, url: "Nuria&Litos-12.jpg",   col: "5 / 13", row: "18 / 22"},  // ample horitzontal
+        { id: 13, url: "DSC00204.jpg",         col: "5 / 9",  row: "22 / 26"},  // petit
+        { id: 14, url: "Nuria&Litos-40.jpg",   col: "9 / 13", row: "22 / 26"},  // petit
+        { id: 15, url: "Nuria&Litos-11.jpg",   col: "1 / 5",  row: "24 / 28"},  // petit
+
+        // --- BLOC 4 (files 26-32) ---
+        { id: 16, url: "Nuria&Litos-476.jpg",  col: "5 / 13", row: "26 / 32"},  // gran horitzontal
+        { id: 17, url: "Nuria&Litos-405.jpg",  col: "1 / 5",  row: "28 / 32"},  // petit
       ],
 
       // --- THE DUO ---
@@ -639,7 +635,9 @@
 
     SITE_CONTENT.portfolio.forEach((item, idx) => {
       const el = document.createElement('div');
-      el.className = `portfolio-item ${item.orient} fade-in`;
+      el.className = 'portfolio-item fade-in';
+      el.style.gridColumn = item.col;
+      el.style.gridRow = item.row;
       el.style.background = item.url
         ? `url(${encodeURIComponent(item.url)}) center/cover no-repeat`
         : GRADIENTS[(item.id - 1) % GRADIENTS.length];
