@@ -58,7 +58,11 @@
     }
     .hero-bg {
       position: absolute; inset: 0;
-      background: linear-gradient(135deg, #F2EDE4 0%, #ede5d8 40%, #F2EDE4 100%);
+      background: url('hero-foto-web.jpg') center/cover no-repeat;
+    }
+    .hero-bg::after {
+      content: ''; position: absolute; inset: 0;
+      background: rgba(242,237,228,0.45);
     }
     .hero-radial {
       position: absolute; inset: 0;
@@ -255,7 +259,7 @@
     }
 
     /* SERVICES */
-    .services-section { padding: 10rem 3rem; }
+    .services-section { padding: 10rem 3rem; text-align: center; }
     .services-inner { max-width: 1100px; margin: 0 auto; }
     .services-label {
       font-family: 'Raleway', sans-serif; font-weight: 300;
@@ -263,14 +267,16 @@
       text-transform: uppercase; color: rgba(35,18,0,0.35); margin-bottom: 5rem;
     }
     .services-grid {
-      display: grid; grid-template-columns: repeat(3, 1fr);
-      gap: 1px; background: rgba(35,18,0,0.07);
+      display: grid; grid-template-columns: repeat(2, 1fr);
+      gap: 1px; background: transparent;
+      max-width: 700px; margin: 0 auto;
     }
     .service-card {
-      padding: 3rem 2.5rem; background: #F2EDE4;
+      padding: 3rem 2.5rem; background: transparent;
       transition: background 0.4s ease;
+      border: 1px solid rgba(35,18,0,0.08);
     }
-    .service-card:hover { background: rgba(35,18,0,0.05); }
+    .service-card:hover { background: rgba(35,18,0,0.03); }
     .service-num {
       font-family: 'Raleway', sans-serif; font-weight: 300;
       font-size: 0.65rem; letter-spacing: 0.3em;
@@ -414,14 +420,6 @@
     </div>
   </section>
 
-  <!-- INTRO QUOTE -->
-  <section class="intro-quote">
-    <div class="fade-in">
-      <p>"We don't chase technical perfection. We chase the instant just before everything changes."</p>
-      <div class="intro-divider"></div>
-    </div>
-  </section>
-
   <!-- PORTFOLIO -->
   <section id="portfolio">
     <div class="portfolio-header fade-in">
@@ -439,7 +437,7 @@
     <div class="duo-grid">
       <div class="fade-in">
         <div class="duo-photo" id="duoPhoto">
-          <div class="duo-photo-caption">Anna & Marc, Barcelona 2024</div>
+          <div class="duo-photo-caption">Anna & Aran, Barcelona 2024</div>
         </div>
       </div>
       <div>
@@ -447,7 +445,7 @@
           <p class="duo-label">The Duo</p>
         </div>
         <div class="fade-in" style="transition-delay:0.2s">
-          <h2 class="duo-title">We are Anna<br><em>& Marc</em></h2>
+          <h2 class="duo-title">We are Anna<br><em>& Aran</em></h2>
         </div>
         <div class="fade-in" style="transition-delay:0.3s">
           <p class="duo-bio">We met at an analog photography workshop in 2019. Since then we work together, we look together, we create together.</p>
@@ -541,19 +539,15 @@
 
       // --- SERVICES ---
       services: [
-        { num: "01", title: "Couples",   desc: "Intimate sessions for two people in love. Places that mean something to you." },
-        { num: "02", title: "Weddings",  desc: "Cinematic documentation of your most important day. Photography and film in a single package." },
-        { num: "03", title: "Families",  desc: "Everyday life elevated. Sessions at your home or your favourite places." },
-        { num: "04", title: "Editorial", desc: "Campaigns for brands that believe in authenticity and a slower rhythm." },
-        { num: "05", title: "Portraits", desc: "Individual sessions for artists, musicians, writers. Your own visual identity." },
-        { num: "06", title: "Corporate", desc: "Audiovisual content for companies with soul. Brand and team videos." },
+        { num: "01", title: "Weddings",  desc: "Cinematic documentation of your most important day. Photography and film in a single package." },
+        { num: "02", title: "Editorial", desc: "Campaigns for brands that believe in authenticity and a slower rhythm." },
       ],
 
       // --- CONTACT ---
       contact: {
-        email:     "hello@entredos.studio",
-        instagram: "@entredos.studio",
-        phone:     "+34 933 000 000",
+        email:     "entredosaudiovisual@gmail.com",
+        instagram: "@entredos_st",
+        phone:     "+34 686 76 60 80",
       },
     };
     // ============================================================
@@ -582,10 +576,6 @@
       el.style.transitionDelay = `${item.id * 0.07}s`;
       el.innerHTML = `
         <div class="portfolio-overlay"></div>
-        <div class="portfolio-caption">
-          <p class="portfolio-caption-label">${item.label}</p>
-          <p class="portfolio-caption-type">${item.type === 'video' ? 'Film' : 'Photo'} · ${item.year}</p>
-        </div>
         <div class="portfolio-border"></div>
       `;
       grid.appendChild(el);
