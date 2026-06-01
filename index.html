@@ -377,7 +377,49 @@
       color: rgba(35,18,0,0.2);
     }
 
-    @keyframes heroFadeIn {
+    /* LIGHTBOX */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0; z-index: 999;
+      background: rgba(35,18,0,0.92);
+      backdrop-filter: blur(8px);
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; animation: lbFadeIn 0.35s ease forwards; }
+    #lightbox img {
+      max-width: 90vw; max-height: 90vh;
+      object-fit: contain;
+      box-shadow: 0 40px 120px rgba(0,0,0,0.5);
+      animation: lbImgIn 0.4s cubic-bezier(0.16,1,0.3,1) forwards;
+    }
+    #lightbox-close {
+      position: absolute; top: 2rem; right: 2.5rem;
+      background: none; border: none; cursor: pointer;
+      color: rgba(242,237,228,0.6); font-size: 1.8rem;
+      font-family: 'Raleway', sans-serif; font-weight: 200;
+      transition: color 0.2s ease; line-height: 1;
+    }
+    #lightbox-close:hover { color: #F2EDE4; }
+    #lightbox-prev, #lightbox-next {
+      position: absolute; top: 50%; transform: translateY(-50%);
+      background: none; border: 1px solid rgba(242,237,228,0.2);
+      color: rgba(242,237,228,0.6); cursor: pointer;
+      padding: 1rem 1.2rem; font-size: 0.9rem;
+      transition: all 0.3s ease; font-family: 'Raleway', sans-serif;
+    }
+    #lightbox-prev { left: 2rem; }
+    #lightbox-next { right: 2rem; }
+    #lightbox-prev:hover, #lightbox-next:hover {
+      border-color: rgba(242,237,228,0.7); color: #F2EDE4;
+    }
+    @keyframes lbFadeIn {
+      from { opacity: 0; } to { opacity: 1; }
+    }
+    @keyframes lbImgIn {
+      from { opacity: 0; transform: scale(0.96); }
+      to { opacity: 1; transform: scale(1); }
+    }
       from { opacity: 0; transform: translateY(20px); }
       to { opacity: 1; transform: translateY(0); }
     }
@@ -503,6 +545,14 @@
     </div>
   </footer>
 
+  <!-- LIGHTBOX -->
+  <div id="lightbox">
+    <button id="lightbox-close">&#x2715;</button>
+    <button id="lightbox-prev">&#8592;</button>
+    <img id="lightbox-img" src="" alt="" />
+    <button id="lightbox-next">&#8594;</button>
+  </div>
+
   <script>
     // ============================================================
     //  SITE_CONTENT — edit all website content here
@@ -516,7 +566,7 @@
       // col/row: CSS grid position (no need to change)
       portfolio: [
         { id: 1, type: "photo", url: "Nuria%26Litos-477.jpg",             col: "1 / 2", row: "1 / 3" },
-        { id: 2, type: "photo", url: "Cl%C3%A0udia%26V%C3%ADctor484_1.jpg", col: "2 / 4", row: "1 / 2" },
+        { id: 2, type: "photo", url: "claudiavictor484.jpg",   col: "2 / 4", row: "1 / 2" },
         { id: 3, type: "photo", url: "Nuria%26Litos-5.jpg",               col: "2 / 3", row: "2 / 3" },
         { id: 4, type: "photo", url: "Nuria%26Litos-405.jpg",             col: "3 / 4", row: "2 / 3" },
         { id: 5, type: "photo", url: "claudiavictor-3.jpg",               col: "1 / 3", row: "3 / 4" },
@@ -565,7 +615,10 @@
 
     // Build portfolio grid
     const grid = document.getElementById('portfolioGrid');
-    SITE_CONTENT.portfolio.forEach(item => {
+    const photoUrls = SITE_CONTENT.portfolio.filter(i => i.url).map(i => i.url);
+    let currentLbIndex = 0;
+
+    SITE_CONTENT.portfolio.forEach((item, idx) => {
       const el = document.createElement('div');
       el.className = 'portfolio-item fade-in';
       el.style.gridColumn = item.col;
@@ -574,11 +627,52 @@
         ? `url(${item.url}) center/cover no-repeat`
         : GRADIENTS[(item.id - 1) % GRADIENTS.length];
       el.style.transitionDelay = `${item.id * 0.07}s`;
-      el.innerHTML = `
-        <div class="portfolio-overlay"></div>
-        <div class="portfolio-border"></div>
-      `;
+      el.innerHTML = `<div class="portfolio-overlay"></div><div class="portfolio-border"></div>`;
+      if (item.url) {
+        el.style.cursor = 'zoom-in';
+        el.addEventListener('click', () => openLightbox(idx));
+      }
       grid.appendChild(el);
+    });
+
+    // Lightbox logic
+    const lb = document.getElementById('lightbox');
+    const lbImg = document.getElementById('lightbox-img');
+
+    function openLightbox(idx) {
+      currentLbIndex = idx;
+      lbImg.src = SITE_CONTENT.portfolio[idx].url;
+      lb.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeLightbox() {
+      lb.classList.remove('open');
+      document.body.style.overflow = '';
+      lbImg.src = '';
+    }
+    function lbNext() {
+      const photos = SITE_CONTENT.portfolio.filter(i => i.url);
+      const urls = SITE_CONTENT.portfolio;
+      let next = (currentLbIndex + 1) % urls.length;
+      while (!urls[next].url) next = (next + 1) % urls.length;
+      openLightbox(next);
+    }
+    function lbPrev() {
+      const urls = SITE_CONTENT.portfolio;
+      let prev = (currentLbIndex - 1 + urls.length) % urls.length;
+      while (!urls[prev].url) prev = (prev - 1 + urls.length) % urls.length;
+      openLightbox(prev);
+    }
+
+    document.getElementById('lightbox-close').addEventListener('click', e => { e.stopPropagation(); closeLightbox(); });
+    document.getElementById('lightbox-next').addEventListener('click', e => { e.stopPropagation(); lbNext(); });
+    document.getElementById('lightbox-prev').addEventListener('click', e => { e.stopPropagation(); lbPrev(); });
+    lb.addEventListener('click', closeLightbox);
+    document.addEventListener('keydown', e => {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') closeLightbox();
+      if (e.key === 'ArrowRight') lbNext();
+      if (e.key === 'ArrowLeft') lbPrev();
     });
 
     // Build duo photo
