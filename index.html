@@ -222,7 +222,13 @@
       aspect-ratio: 3/4;
       background: linear-gradient(160deg, #ede5d8 0%, #e8ddd0 100%);
       position: relative; overflow: hidden;
-      background-size: cover; background-position: center;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .duo-logo {
+      width: 78%; max-width: 320px;
+      display: block;
+      mix-blend-mode: multiply;
+      opacity: 0.9;
     }
     .duo-photo-caption {
       position: absolute; bottom: 2rem; left: 2rem;
@@ -478,15 +484,8 @@
   <section id="duo">
     <div class="duo-grid">
       <div class="fade-in">
-        <div class="duo-photo" id="duoPhoto">
-            <img src="LOGO_ENTRE_DOS_final.png" alt="Entre Dos Studio" style="
-              width: 75%; max-width: 340px;
-              position: absolute; top: 50%; left: 50%;
-              transform: translate(-50%, -50%);
-              opacity: 0.85;
-              mix-blend-mode: multiply;
-            " />
-          <div class="duo-photo-caption">Anna & Aran, Barcelona 2024</div>
+        <div class="duo-photo">
+            <img src="LOGO_ENTRE_DOS_final.png" alt="Entre Dos Studio" class="duo-logo" />
         </div>
       </div>
       <div>
@@ -583,7 +582,7 @@
         { id: 6,  url: "Carla&Ivan1.jpg",      col: "1 / 7",  row: "9 / 14" },  // gran horitzontal esquerra
         { id: 7,  url: "claudiavictor-3.jpg",  col: "7 / 13", row: "9 / 13" },  // mitjà vertical dreta
         { id: 8,  url: "Nuria&Litos-377.jpg",  col: "1 / 5",  row: "14 / 18"},  // petit vertical
-        { id: 9,  url: "286A4150.jpg",         col: "5 / 9",  row: "14 / 18", pos: "center top"},  // ram flors
+        { id: 9,  url: "286A4150.jpg",         col: "5 / 9",  row: "14 / 18", pos: "center 30%"},  // ram flors
         { id: 10, url: "Nuria&Litos-5.jpg",    col: "7 / 13", row: "13 / 18"},  // petit vertical dreta
 
         // --- BLOC 3 (files 18-26) ---
