@@ -162,15 +162,30 @@
     .portfolio-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      grid-auto-rows: 380px;
+      grid-template-rows: auto;
       gap: 3px;
       max-width: 1100px; margin: 0 auto;
     }
     .portfolio-item {
-      position: relative; overflow: hidden; cursor: pointer;
+      position: relative; overflow: hidden; cursor: zoom-in;
       opacity: 0; transform: scale(0.97);
       transition: opacity 1s cubic-bezier(0.16,1,0.3,1), transform 1s cubic-bezier(0.16,1,0.3,1);
       background-size: cover; background-position: center; background-repeat: no-repeat;
+    }
+    /* Horitzontal 4:3 — ocupa 2 columnes */
+    .portfolio-item.horiz {
+      grid-column: span 2;
+      aspect-ratio: 4 / 3;
+    }
+    /* Vertical 3:4 — ocupa 1 columna */
+    .portfolio-item.vert {
+      grid-column: span 1;
+      aspect-ratio: 3 / 4;
+    }
+    /* Quadrat — ocupa 1 columna */
+    .portfolio-item.sq {
+      grid-column: span 1;
+      aspect-ratio: 4 / 3;
     }
     .portfolio-item.visible { opacity: 1; transform: scale(1); }
     .portfolio-overlay {
@@ -565,30 +580,32 @@
       // url:   image filename (put images in same folder as index.html)
       // col/row: CSS grid position (no need to change)
       portfolio: [
-        // Fila 1
-        { id: 1,  type: "photo", url: "286A5057.jpg",          col: "1 / 2", row: "1 / 2" },
-        { id: 2,  type: "photo", url: "286A6032.jpg",          col: "2 / 4", row: "1 / 2" },
-        // Fila 2
-        { id: 3,  type: "photo", url: "286A4110.jpg",          col: "1 / 2", row: "2 / 3" },
-        { id: 4,  type: "photo", url: "Carla&Ivan1.jpg",       col: "2 / 3", row: "2 / 3" },
-        { id: 5,  type: "photo", url: "Nuria&Litos-410.jpg",   col: "3 / 4", row: "2 / 3" },
-        // Fila 3
-        { id: 6,  type: "photo", url: "Nuria&Litos-811.jpg",   col: "1 / 3", row: "3 / 4" },
-        { id: 7,  type: "photo", url: "286A4150.jpg",          col: "3 / 4", row: "3 / 4" },
-        // Fila 4
-        { id: 8,  type: "photo", url: "claudiavictor-3.jpg",   col: "1 / 2", row: "4 / 5" },
-        { id: 9,  type: "photo", url: "Nuria&Litos-5.jpg",     col: "2 / 3", row: "4 / 5" },
-        { id: 10, type: "photo", url: "Nuria&Litos-477.jpg",   col: "3 / 4", row: "4 / 5" },
-        // Fila 5
-        { id: 11, type: "photo", url: "Nuria&Litos-377.jpg",   col: "1 / 3", row: "5 / 6" },
-        { id: 12, type: "photo", url: "Nuria&Litos-12.jpg",    col: "3 / 4", row: "5 / 6" },
-        // Fila 6
-        { id: 13, type: "photo", url: "DSC00204.jpg",          col: "1 / 2", row: "6 / 7" },
-        { id: 14, type: "photo", url: "Nuria&Litos-40.jpg",    col: "2 / 4", row: "6 / 7" },
-        // Fila 7
-        { id: 15, type: "photo", url: "Nuria&Litos-11.jpg",    col: "1 / 2", row: "7 / 8" },
-        { id: 16, type: "photo", url: "Nuria&Litos-476.jpg",   col: "2 / 3", row: "7 / 8" },
-        { id: 17, type: "photo", url: "Nuria&Litos-405.jpg",   col: "3 / 4", row: "7 / 8" },
+        // Fila 1: vert + horiz (3 col total)
+        { id: 1,  url: "286A5057.jpg",        orient: "vert" },
+        { id: 2,  url: "286A6032.jpg",         orient: "horiz" },
+        // Fila 2: horiz + vert (3 col total)
+        { id: 3,  url: "Nuria&Litos-811.jpg",  orient: "horiz" },
+        { id: 4,  url: "286A4110.jpg",         orient: "vert" },
+        // Fila 3: vert + vert + vert (3 col total)
+        { id: 5,  url: "Carla&Ivan1.jpg",      orient: "vert" },
+        { id: 6,  url: "Nuria&Litos-410.jpg",  orient: "vert" },
+        { id: 7,  url: "claudiavictor-3.jpg",  orient: "vert" },
+        // Fila 4: horiz + vert (3 col total)
+        { id: 8,  url: "Nuria&Litos-377.jpg",  orient: "horiz" },
+        { id: 9,  url: "286A4150.jpg",         orient: "vert" },
+        // Fila 5: vert + horiz (3 col total)
+        { id: 10, url: "Nuria&Litos-5.jpg",    orient: "vert" },
+        { id: 11, url: "Nuria&Litos-477.jpg",  orient: "horiz" },
+        // Fila 6: vert + vert + vert
+        { id: 12, url: "Nuria&Litos-12.jpg",   orient: "vert" },
+        { id: 13, url: "DSC00204.jpg",         orient: "vert" },
+        { id: 14, url: "Nuria&Litos-40.jpg",   orient: "vert" },
+        // Fila 7: horiz + vert
+        { id: 15, url: "Nuria&Litos-11.jpg",   orient: "horiz" },
+        { id: 16, url: "Nuria&Litos-476.jpg",  orient: "vert" },
+        // Fila 8: vert + horiz
+        { id: 17, url: "Nuria&Litos-405.jpg",  orient: "vert" },
+        { id: 18, url: "Nuria&Litos-476.jpg",  orient: "horiz" },
       ],
 
       // --- THE DUO ---
@@ -598,9 +615,9 @@
 
       // --- STATS ---
       stats: [
-        { value: "12+",  label: "Years of experience" },
+        { value: "20+", label: "Combined years of experience" },
         { value: "340+", label: "Sessions completed" },
-        { value: "3",    label: "International awards" },
+        { value: "25+", label: "Cities captured" },
       ],
 
       // --- SERVICES ---
@@ -631,21 +648,17 @@
 
     // Build portfolio grid
     const grid = document.getElementById('portfolioGrid');
-    const photoUrls = SITE_CONTENT.portfolio.filter(i => i.url).map(i => i.url);
     let currentLbIndex = 0;
 
     SITE_CONTENT.portfolio.forEach((item, idx) => {
       const el = document.createElement('div');
-      el.className = 'portfolio-item fade-in';
-      el.style.gridColumn = item.col;
-      el.style.gridRow = item.row;
+      el.className = `portfolio-item ${item.orient} fade-in`;
       el.style.background = item.url
         ? `url(${encodeURIComponent(item.url)}) center/cover no-repeat`
         : GRADIENTS[(item.id - 1) % GRADIENTS.length];
-      el.style.transitionDelay = `${item.id * 0.07}s`;
+      el.style.transitionDelay = `${(idx % 6) * 0.07}s`;
       el.innerHTML = `<div class="portfolio-overlay"></div><div class="portfolio-border"></div>`;
       if (item.url) {
-        el.style.cursor = 'zoom-in';
         el.addEventListener('click', () => openLightbox(idx));
       }
       grid.appendChild(el);
