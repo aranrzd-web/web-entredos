@@ -9,6 +9,42 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Upright:wght@300;400;500;600&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&family=Josefin+Sans:wght@100;200;300&family=Montserrat:wght@300;400&family=Raleway:wght@300;400&display=swap" rel="stylesheet">
   <style>
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-LT.OTF') format('opentype');
+      font-weight: 300;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-LTIT.OTF') format('opentype');
+      font-weight: 300;
+      font-style: italic;
+    }
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-REG.OTF') format('opentype');
+      font-weight: 400;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-IT.OTF') format('opentype');
+      font-weight: 400;
+      font-style: italic;
+    }
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-BD.OTF') format('opentype');
+      font-weight: 700;
+      font-style: normal;
+    }
+    @font-face {
+      font-family: 'The Seasons';
+      src: url('THESEASONS-BDIT.OTF') format('opentype');
+      font-weight: 700;
+      font-style: italic;
+    }
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html { scroll-behavior: smooth; }
     body { background: #F2EDE4; color: #231200; font-family: 'Raleway', sans-serif; font-weight: 300; }
@@ -91,9 +127,9 @@
     }
     .hero-title-wrap { margin-bottom: 3rem; }
     .hero-title {
-      font-family: 'Cormorant Upright', Georgia, serif;
+      font-family: 'The Seasons', 'Cormorant Upright', Georgia, serif;
       font-size: clamp(2rem, 6vw, 4.5rem);
-      font-weight: 500; line-height: 1.05; text-transform: uppercase;
+      font-weight: 400; line-height: 1.05; text-transform: uppercase;
       color: #231200; letter-spacing: 0.12em; margin: 0;
     }
     .hero-studio {
@@ -463,7 +499,7 @@
         <p class="hero-studio">Studio</p>
       </div>
       <p class="hero-subtitle">Our story, capturing yours</p>
-      <a href="#portfolio" class="hero-cta">Our Stories</a>
+      <a href="#portfolio" class="hero-cta">Begin here</a>
     </div>
     <div class="hero-scroll">
       <div class="hero-scroll-line"></div>
