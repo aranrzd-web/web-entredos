@@ -225,6 +225,7 @@
       color: #231200 !important;
       background: rgba(35,18,0,0.04);
     }
+    .video-footer a:not(.download-btn) {
       color: rgba(35,18,0,0.5);
       text-decoration: none;
       border-bottom: 1px solid rgba(35,18,0,0.2);
@@ -236,7 +237,7 @@
       display: inline-block;
       margin-top: 1rem;
     }
-    .video-footer a:hover {
+    .video-footer a:not(.download-btn):hover {
       color: #231200;
       border-bottom-color: rgba(35,18,0,0.6);
     }
@@ -277,16 +278,15 @@
   <div id="videoScreen">
     <div class="video-header">
       <img src="logowebbo.jpg" alt="Entre Dos Studio" class="video-logo" />
-      <h1 class="video-title">Clàudia & Víctor</h1>
-      <p class="video-subtitle">Wedding Film · 2026</p>
+      <h1 class="video-title" id="videoTitle"></h1>
+      <p class="video-subtitle" id="videoSubtitle"></p>
     </div>
 
     <div class="video-wrap">
-      <!-- 🎬 SUBSTITUEIX L'src PER LA URL DEL TEU GOOGLE DRIVE -->
-      <!-- Format: https://drive.google.com/file/d/ID_DEL_VIDEO/preview -->
+      <!-- El vídeo es carrega automàticament segons la contrasenya (mira FILMS a baix de tot) -->
       <iframe
         id="videoFrame"
-        src="https://drive.google.com/file/d/1biJ3oawTvPv_FZwOBV2VW7aw_1YJazGd/preview"
+        src=""
         allow="autoplay"
         allowfullscreen>
       </iframe>
@@ -294,7 +294,7 @@
 
     <div class="video-footer">
       <p>With love, Entre Dos Studio</p>
-      <a href="https://drive.google.com/uc?export=download&id=1biJ3oawTvPv_FZwOBV2VW7aw_1YJazGd" target="_blank" class="download-btn">↓ Download your film</a>
+      <a href="#" id="downloadBtn" target="_blank" class="download-btn">↓ Download your film</a>
       <br>
       <a href="index.html">← Back to website</a>
     </div>
@@ -302,20 +302,31 @@
 
   <script>
     // ============================================================
-    //  CONFIGURACIÓ — canvia aquí la contrasenya i el vídeo
+    //  VÍDEOS DE CLIENTS — una línia per parella
+    //  'contrasenya': { title, subtitle, drive }
+    //  drive = l'ID de l'enllaç de Google Drive
+    //  (el tros entre /d/ i /view)
+    //  Per afegir una parella nova, copia una línia i canvia-la.
     // ============================================================
-    const PASSWORD = 'claudiavictor';
-    // Per canviar el vídeo, substitueix l'src de l'iframe de dalt
-    // Format Google Drive: https://drive.google.com/file/d/ID/preview
+    const FILMS = {
+      'claudiavictor': { title: 'Clàudia & Víctor', subtitle: 'Wedding Film · 2026', drive: '1biJ3oawTvPv_FZwOBV2VW7aw_1YJazGd' },
+      'carlaivan':     { title: 'Carla & Ivan',     subtitle: 'Wedding Film · 2026', drive: '1z4yYHa2LhK1-v2NGLYpfqgT7aOPzoID1' },
+    };
     // ============================================================
 
     function checkPassword(e) {
       e.preventDefault();
       const input = document.getElementById('passwordInput').value.trim().toLowerCase();
       const errorMsg = document.getElementById('errorMsg');
+      const film = FILMS[input];
 
-      if (input === PASSWORD.toLowerCase()) {
-        // Correcte — mostra el vídeo
+      if (film) {
+        // Correcte — carrega el vídeo d'aquesta parella
+        document.getElementById('videoTitle').textContent = film.title;
+        document.getElementById('videoSubtitle').textContent = film.subtitle;
+        document.getElementById('videoFrame').src = 'https://drive.google.com/file/d/' + film.drive + '/preview';
+        document.getElementById('downloadBtn').href = 'https://drive.google.com/uc?export=download&id=' + film.drive;
+        document.title = film.title + ' · Entre Dos Studio';
         document.getElementById('lockScreen').style.animation = 'none';
         document.getElementById('lockScreen').style.opacity = '0';
         document.getElementById('lockScreen').style.transition = 'opacity 0.6s ease';
