@@ -242,6 +242,39 @@
       border-bottom-color: rgba(35,18,0,0.6);
     }
 
+    /* ── Animació d'accents al títol ── */
+    .title-burst {
+      position: relative;
+      display: inline-block;
+    }
+    .title-burst.pop {
+      animation: titlePop 0.5s cubic-bezier(.2,.8,.3,1);
+    }
+    .burst-svg {
+      position: absolute;
+      left: 0;
+      top: 0;
+      overflow: visible;
+      pointer-events: none;
+    }
+    .burst-svg line {
+      stroke: #231200;
+      stroke-opacity: 0.75;
+      stroke-width: 1.3;
+      stroke-linecap: round;
+      animation: streak 0.75s cubic-bezier(.2,.7,.3,1) forwards;
+    }
+    @keyframes streak {
+      0%   { stroke-dashoffset: var(--l); opacity: 1; }
+      80%  { opacity: 1; }
+      100% { stroke-dashoffset: calc(var(--l) * -1); opacity: 0; }
+    }
+    @keyframes titlePop {
+      0%   { transform: scale(1); }
+      35%  { transform: scale(1.035); }
+      100% { transform: scale(1); }
+    }
+
     @keyframes fadeIn {
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
@@ -253,7 +286,7 @@
   <!-- LOCK SCREEN -->
   <div id="lockScreen">
     <img src="logowebbo.jpg" alt="Entre Dos Studio" class="lock-logo" />
-    <h1 class="lock-title">Your film is ready</h1>
+    <h1 class="lock-title"><span class="title-burst" id="lockTitle">Your film is ready</span></h1>
     <p class="lock-subtitle">Enter your private access code to watch</p>
 
     <form class="lock-form" onsubmit="checkPassword(event)">
@@ -287,7 +320,8 @@
       <iframe
         id="videoFrame"
         src=""
-        allow="autoplay"
+        allow="autoplay; encrypted-media; picture-in-picture; fullscreen"
+        referrerpolicy="strict-origin-when-cross-origin"
         allowfullscreen>
       </iframe>
     </div>
@@ -303,16 +337,68 @@
   <script>
     // ============================================================
     //  VÍDEOS DE CLIENTS — una línia per parella
-    //  'contrasenya': { title, subtitle, drive }
-    //  drive = l'ID de l'enllaç de Google Drive
-    //  (el tros entre /d/ i /view)
+    //  'contrasenya': { title, subtitle, drive, youtube }
+    //  drive   = ID de Google Drive (el tros entre /d/ i /view)
+    //            → s'usa per al botó de descàrrega
+    //  youtube = ID de YouTube (el tros després de watch?v=)
+    //            → si hi és, el vídeo es veu des de YouTube (fins a 4K)
+    //            → si no hi és, es veu des de Drive (màx. 1080p)
     //  Per afegir una parella nova, copia una línia i canvia-la.
     // ============================================================
     const FILMS = {
       'claudiavictor': { title: 'Clàudia & Víctor', subtitle: 'Wedding Film · 2026', drive: '1biJ3oawTvPv_FZwOBV2VW7aw_1YJazGd' },
-      'carlaivan':     { title: 'Carla & Ivan',     subtitle: 'Wedding Film · 2026', drive: '1z4yYHa2LhK1-v2NGLYpfqgT7aOPzoID1' },
+      'carlaivan':     { title: 'Carla & Ivan',     subtitle: 'Wedding Film · 2026', drive: '1z4yYHa2LhK1-v2NGLYpfqgT7aOPzoID1', youtube: 'JmjyiFnFAt4' },
     };
     // ============================================================
+
+    // ── Animació: línies d'accent tipus còmic / focs artificials ──
+    // Dibuixa petites ratlles que surten dels dos costats del títol.
+    // Retorna quants mil·lisegons dura, per esperar abans de mostrar el vídeo.
+    function burst() {
+      const title = document.getElementById('lockTitle');
+      const w = title.offsetWidth, h = title.offsetHeight;
+      const NS = 'http://www.w3.org/2000/svg';
+      const svg = document.createElementNS(NS, 'svg');
+      svg.setAttribute('class', 'burst-svg');
+      svg.setAttribute('width', w);
+      svg.setAttribute('height', h);
+
+      // Dues onades: la primera més llarga, la segona més curta i una mica més tard
+      const waves = [
+        { delay: 0,   gap: 10, angles: [-52, -26, 0, 26, 52], lengths: [13, 19, 24, 19, 13] },
+        { delay: 220, gap: 22, angles: [-39, -13, 13, 39],    lengths: [7, 10, 10, 7] }
+      ];
+      const sides = [
+        { x: -4,    y: h * 0.48, base: 180 },  // esquerra
+        { x: w + 4, y: h * 0.48, base: 0 }     // dreta
+      ];
+
+      sides.forEach(side => {
+        waves.forEach(wave => {
+          wave.angles.forEach((a, i) => {
+            const ang = (side.base + (side.base === 180 ? -a : a)) * Math.PI / 180;
+            const len = wave.lengths[i];
+            const x1 = side.x + Math.cos(ang) * wave.gap;
+            const y1 = side.y + Math.sin(ang) * wave.gap;
+            const x2 = side.x + Math.cos(ang) * (wave.gap + len);
+            const y2 = side.y + Math.sin(ang) * (wave.gap + len);
+            const line = document.createElementNS(NS, 'line');
+            line.setAttribute('x1', x1); line.setAttribute('y1', y1);
+            line.setAttribute('x2', x2); line.setAttribute('y2', y2);
+            line.setAttribute('stroke-dasharray', len);
+            line.style.setProperty('--l', len + 'px');
+            line.style.strokeDashoffset = len + 'px';
+            line.style.animationDelay = wave.delay + 'ms';
+            svg.appendChild(line);
+          });
+        });
+      });
+
+      title.appendChild(svg);
+      title.classList.add('pop');
+      setTimeout(() => svg.remove(), 1400);
+      return 1050;
+    }
 
     function checkPassword(e) {
       e.preventDefault();
@@ -324,16 +410,23 @@
         // Correcte — carrega el vídeo d'aquesta parella
         document.getElementById('videoTitle').textContent = film.title;
         document.getElementById('videoSubtitle').textContent = film.subtitle;
-        document.getElementById('videoFrame').src = 'https://drive.google.com/file/d/' + film.drive + '/preview';
+        document.getElementById('videoFrame').src = film.youtube
+          ? 'https://www.youtube-nocookie.com/embed/' + film.youtube + '?rel=0&modestbranding=1&playsinline=1'
+          : 'https://drive.google.com/file/d/' + film.drive + '/preview';
         document.getElementById('downloadBtn').href = 'https://drive.google.com/uc?export=download&id=' + film.drive;
         document.title = film.title + ' · Entre Dos Studio';
-        document.getElementById('lockScreen').style.animation = 'none';
-        document.getElementById('lockScreen').style.opacity = '0';
-        document.getElementById('lockScreen').style.transition = 'opacity 0.6s ease';
+        // Petita animació de "focs" al voltant del títol, i després el vídeo
+        const reduceMotion = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const burstTime = reduceMotion ? 0 : burst();
         setTimeout(() => {
-          document.getElementById('lockScreen').style.display = 'none';
-          document.getElementById('videoScreen').classList.add('visible');
-        }, 600);
+          document.getElementById('lockScreen').style.animation = 'none';
+          document.getElementById('lockScreen').style.transition = 'opacity 0.6s ease';
+          document.getElementById('lockScreen').style.opacity = '0';
+          setTimeout(() => {
+            document.getElementById('lockScreen').style.display = 'none';
+            document.getElementById('videoScreen').classList.add('visible');
+          }, 600);
+        }, burstTime);
       } else {
         // Incorrecte — mostra error i sacseja l'input
         errorMsg.classList.add('visible');
